@@ -167,6 +167,8 @@ export default SWC.createComponent({
 		while (state.graphScene.children.length) { state.graphScene.remove(state.graphScene.children[0]) } // Clear the place
 
 		state.graphData.nodes.forEach(node => {
+			if (node.__sphere) state.graphScene.add(node.__sphere);
+
 			const sphere = new THREE.Mesh(
 				new THREE.SphereGeometry(Math.cbrt(node[state.valField] || 1) * state.nodeRelSize, 8, 8),
 				new THREE.MeshLambertMaterial({ color: node[state.colorField] || 0xffffaa, transparent: true, opacity: 0.75 })
@@ -179,6 +181,8 @@ export default SWC.createComponent({
 
 		const lineMaterial = new THREE.LineBasicMaterial({ color: 0xf0f0f0, transparent: true, opacity: state.lineOpacity });
 		state.graphData.links.forEach(link => {
+			if (link.__line) state.graphScene.add(link.__line);
+
 			const geometry = new THREE.BufferGeometry();
 			geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(2 * 3), 3));
 			const line = new THREE.Line(geometry, lineMaterial);
@@ -287,4 +291,3 @@ export default SWC.createComponent({
 		}
 	}
 });
-
